@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "03.csv",
+				"fileName": "llamadas-tigo.csv",
 				"container": "raw-entel"
 			},
 			"columnDelimiter": ",",
@@ -23,55 +23,27 @@
 		},
 		"schema": [
 			{
-				"name": "SERVICIO",
+				"name": "DESCRIPCION",
 				"type": "String"
 			},
 			{
-				"name": "REGISTRO",
+				"name": "TIPO",
 				"type": "String"
 			},
 			{
-				"name": "NUMERO_A",
+				"name": "NUMERO_ORIGEN",
 				"type": "String"
 			},
 			{
-				"name": "IMEI_A",
-				"type": "String"
-			},
-			{
-				"name": "RBS UTILIZADA_A",
-				"type": "String"
-			},
-			{
-				"name": "CELDA_A",
-				"type": "String"
-			},
-			{
-				"name": "LATITUD_LONGITUD_A",
-				"type": "String"
-			},
-			{
-				"name": "NUMERO_B",
-				"type": "String"
-			},
-			{
-				"name": "IMEI_B",
-				"type": "String"
-			},
-			{
-				"name": "RBS_UTILIZADA_B",
-				"type": "String"
-			},
-			{
-				"name": "CELDA_B",
-				"type": "String"
-			},
-			{
-				"name": "LATITUD_LONGITUD_B",
+				"name": "NUMERO_DESTINO",
 				"type": "String"
 			},
 			{
 				"name": "FECHA",
+				"type": "String"
+			},
+			{
+				"name": "HORA",
 				"type": "String"
 			},
 			{
