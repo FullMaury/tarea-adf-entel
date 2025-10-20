@@ -23,59 +23,59 @@
 		},
 		"schema": [
 			{
-				"name": "0",
+				"name": "SERVICIO",
 				"type": "String"
 			},
 			{
-				"name": "1",
+				"name": "REGISTRO",
 				"type": "String"
 			},
 			{
-				"name": "2",
+				"name": "NUMERO_A",
 				"type": "String"
 			},
 			{
-				"name": "3",
+				"name": "IMEI_A",
 				"type": "String"
 			},
 			{
-				"name": "4",
+				"name": "RBS UTILIZADA_A",
 				"type": "String"
 			},
 			{
-				"name": "5",
+				"name": "CELDA_A",
 				"type": "String"
 			},
 			{
-				"name": "6",
+				"name": "LATITUD_LONGITUD_A",
 				"type": "String"
 			},
 			{
-				"name": "7",
+				"name": "NUMERO_B",
 				"type": "String"
 			},
 			{
-				"name": "8",
+				"name": "IMEI_B",
 				"type": "String"
 			},
 			{
-				"name": "9",
+				"name": "RBS_UTILIZADA_B",
 				"type": "String"
 			},
 			{
-				"name": "10",
+				"name": "CELDA_B",
 				"type": "String"
 			},
 			{
-				"name": "11",
+				"name": "LATITUD_LONGITUD_B",
 				"type": "String"
 			},
 			{
-				"name": "12",
+				"name": "FECHA",
 				"type": "String"
 			},
 			{
-				"name": "13",
+				"name": "DURACION",
 				"type": "String"
 			}
 		]
