@@ -9,7 +9,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_tabla_llamadas_entel",
+						"referenceName": "ds_tabla_llamadas",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -18,7 +18,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_silver_llamadas_entel",
+						"referenceName": "ds_silver_llamadas",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"

@@ -1,0 +1,55 @@
+{
+	"name": "ds_hechos_datos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Is_sql_dw_entel",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Gold"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id_datos",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "subidos",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "descargador",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "total",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "id_fecha",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "id_numero",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "id_radio_base",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "GOLD",
+			"table": "hechos_datos"
+		}
+	}
+}

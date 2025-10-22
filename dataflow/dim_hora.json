@@ -9,7 +9,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_silver_llamadas_entel",
+						"referenceName": "ds_silver_llamadas",
 						"type": "DatasetReference"
 					},
 					"name": "silver"
@@ -17,10 +17,6 @@
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "ds_dim_hora",
-						"type": "DatasetReference"
-					},
 					"name": "dimhora"
 				}
 			],
@@ -38,24 +34,13 @@
 				"     format: 'query') ~> silver",
 				"silver sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          id_hora as integer,",
-				"          hora as timestamp,",
-				"          hora24 as integer,",
-				"          hora12 as integer",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
 				"          hora,",
 				"          hora24",
-				"     )) ~> dimhora"
+				"     ),",
+				"     format: 'table') ~> dimhora"
 			]
 		}
 	}

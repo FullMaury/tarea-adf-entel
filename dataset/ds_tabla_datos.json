@@ -1,5 +1,5 @@
 {
-	"name": "ds_tabla_llamadas",
+	"name": "ds_tabla_datos",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Is_sql_dw_entel",
@@ -12,65 +12,49 @@
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "SERVICIO",
+				"name": "FECHA_INICIO",
 				"type": "varchar"
 			},
 			{
-				"name": "REGISTRO",
+				"name": "FECHA_FIN",
 				"type": "varchar"
 			},
 			{
-				"name": "NUMERO_A",
+				"name": "NUMERO",
 				"type": "varchar"
 			},
 			{
-				"name": "IMEI_A",
+				"name": "IMEI",
 				"type": "varchar"
 			},
 			{
-				"name": "RBS_UTILIZADA_A",
+				"name": "RBS_UTILIZADA",
 				"type": "varchar"
 			},
 			{
-				"name": "CELDA_A",
+				"name": "CELDA",
 				"type": "varchar"
 			},
 			{
-				"name": "LATITUD_LONGITUD_A",
+				"name": "LATITUD_LONGITUD",
 				"type": "varchar"
 			},
 			{
-				"name": "NUMERO_B",
+				"name": "DATOS_SUBIDOS",
 				"type": "varchar"
 			},
 			{
-				"name": "IMEI_B",
+				"name": "DATOS_DESCARGADOS",
 				"type": "varchar"
 			},
 			{
-				"name": "RBS_UTILIZADA_B",
-				"type": "varchar"
-			},
-			{
-				"name": "CELDA_B",
-				"type": "varchar"
-			},
-			{
-				"name": "LATITUD_LONGITUD_B",
-				"type": "varchar"
-			},
-			{
-				"name": "FECHA",
-				"type": "varchar"
-			},
-			{
-				"name": "DURACION",
+				"name": "VOLUMEN_TOTAL",
 				"type": "varchar"
 			}
 		],
 		"typeProperties": {
 			"schema": "BRONZE",
-			"table": "llamadas"
+			"table": "datos"
 		}
 	}
 }

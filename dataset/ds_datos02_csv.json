@@ -1,5 +1,5 @@
 {
-	"name": "ds_llamadas_csv",
+	"name": "ds_datos02_csv",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Is_sa_datos_entel",
@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "llamadas.csv",
+				"fileName": "dato02.csv",
 				"container": "raw-entel"
 			},
 			"columnDelimiter": ",",
@@ -23,31 +23,43 @@
 		},
 		"schema": [
 			{
-				"name": "DESCRIPCION",
+				"name": "FECHA_INICIO",
 				"type": "String"
 			},
 			{
-				"name": "TIPO",
+				"name": " FECHA_FIN",
 				"type": "String"
 			},
 			{
-				"name": "NUMERO_ORIGEN",
+				"name": "NUMERO",
 				"type": "String"
 			},
 			{
-				"name": "NUMERO_DESTINO",
+				"name": "IMEI",
 				"type": "String"
 			},
 			{
-				"name": "FECHA",
+				"name": "RBS_UTILIZADA",
 				"type": "String"
 			},
 			{
-				"name": "HORA",
+				"name": "CELDA",
 				"type": "String"
 			},
 			{
-				"name": "DURACION",
+				"name": "LATITUD_LONGITUD",
+				"type": "String"
+			},
+			{
+				"name": "DATOS_SUBIDOS(BYTES)",
+				"type": "String"
+			},
+			{
+				"name": "DATOS_DESCARGADOS(BYTES)",
+				"type": "String"
+			},
+			{
+				"name": "VOLUMEN_TOTAL(BYTES)",
 				"type": "String"
 			}
 		]
