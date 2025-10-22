@@ -13,13 +13,13 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_cargar_datos')]",
+			"name": "[concat(parameters('factoryName'), '/cargar_bronze_datos')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Data flow1",
+						"name": "df_cargar_datos",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
 						"policy": {
@@ -32,13 +32,16 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "df_cargar_llamadas",
+								"referenceName": "df_cargar_datos",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
 									"source1": {},
-									"sink1": {}
-								}
+									"source2": {},
+									"sink1": {},
+									"sink2": {}
+								},
+								"linkedServiceParameters": {}
 							},
 							"staging": {},
 							"compute": {
@@ -60,13 +63,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_limpiar_datos')]",
+			"name": "[concat(parameters('factoryName'), '/cargar_silver_datos')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Data flow1",
+						"name": "df_limpiar_datos",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
 						"policy": {
@@ -79,12 +82,107 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "df_silver_limpiar_datos",
+								"referenceName": "df_limpiar_datos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"brzDatos": {},
+									"silverDatos": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Silver"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cargar_bronze_llamadas')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_cargar_llamadas",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_cargar_llamadas",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
 									"source1": {},
 									"sink1": {}
+								},
+								"linkedServiceParameters": {}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Bronze"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cargar_silver_llamadas')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_limpiar_llamadas",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_limpiar_llamadas",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"brzLlamadas": {},
+									"silverLlamadas": {}
 								}
 							},
 							"staging": {},
