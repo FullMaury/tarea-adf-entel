@@ -36,7 +36,11 @@
 				"type": "varchar"
 			},
 			{
-				"name": "LATITUD_LONGITUD",
+				"name": "LATITUD",
+				"type": "varchar"
+			},
+			{
+				"name": "LONGITUD",
 				"type": "varchar"
 			},
 			{

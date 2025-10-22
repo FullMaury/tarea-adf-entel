@@ -53,18 +53,18 @@
 			},
 			{
 				"name": "DATOS_SUBIDOS",
-				"type": "bigint",
-				"precision": 19
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "DATOS_DESCARGADOS",
-				"type": "bigint",
-				"precision": 19
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "VOLUMEN_TOTAL",
-				"type": "bigint",
-				"precision": 19
+				"type": "int",
+				"precision": 10
 			}
 		],
 		"typeProperties": {

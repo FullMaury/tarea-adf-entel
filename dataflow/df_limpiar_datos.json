@@ -1,0 +1,129 @@
+{
+	"name": "df_limpiar_datos",
+	"properties": {
+		"folder": {
+			"name": "Silver"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_tabla_datos",
+						"type": "DatasetReference"
+					},
+					"name": "brzDatos"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver_datos",
+						"type": "DatasetReference"
+					},
+					"name": "silverDatos"
+				}
+			],
+			"transformations": [
+				{
+					"name": "subidos"
+				},
+				{
+					"name": "descargados"
+				},
+				{
+					"name": "total"
+				},
+				{
+					"name": "lat"
+				},
+				{
+					"name": "long"
+				},
+				{
+					"name": "fechaInicio"
+				},
+				{
+					"name": "fechaFin"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          FECHA_INICIO as string,",
+				"          FECHA_FIN as string,",
+				"          NUMERO as string,",
+				"          IMEI as string,",
+				"          RBS_UTILIZADA as string,",
+				"          CELDA as string,",
+				"          LATITUD as string,",
+				"          LONGITUD as string,",
+				"          DATOS_SUBIDOS as string,",
+				"          DATOS_DESCARGADOS as string,",
+				"          VOLUMEN_TOTAL as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> brzDatos",
+				"brzDatos cast(output(",
+				"          DATOS_SUBIDOS as integer",
+				"     ),",
+				"     errors: true) ~> subidos",
+				"subidos cast(output(",
+				"          DATOS_DESCARGADOS as integer",
+				"     ),",
+				"     errors: true) ~> descargados",
+				"descargados cast(output(",
+				"          VOLUMEN_TOTAL as integer",
+				"     ),",
+				"     errors: true) ~> total",
+				"fechaFin cast(output(",
+				"          LATITUD as double",
+				"     ),",
+				"     errors: true) ~> lat",
+				"lat cast(output(",
+				"          LONGITUD as double",
+				"     ),",
+				"     errors: true) ~> long",
+				"total derive(F_INICIO_LIMPIO = toTimestamp(FECHA_INICIO, 'dd-MM-yyyy HH:mm:ss')) ~> fechaInicio",
+				"fechaInicio derive(F_FIN_LIMPIO = toTimestamp(FECHA_FIN, 'dd-MM-yyyy HH:mm:ss')) ~> fechaFin",
+				"long sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          FECHA_INICIO as timestamp,",
+				"          FECHA_FIN as timestamp,",
+				"          NUMERO as string,",
+				"          IMEI as string,",
+				"          RBS_UTILIZADA as string,",
+				"          CELDA as string,",
+				"          LATITUD as decimal(9,6),",
+				"          LONGITUD as decimal(9,6),",
+				"          DATOS_SUBIDOS as integer,",
+				"          DATOS_DESCARGADOS as integer,",
+				"          VOLUMEN_TOTAL as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          FECHA_INICIO = F_INICIO_LIMPIO,",
+				"          FECHA_FIN = F_FIN_LIMPIO,",
+				"          NUMERO,",
+				"          IMEI,",
+				"          RBS_UTILIZADA,",
+				"          CELDA,",
+				"          LATITUD,",
+				"          LONGITUD,",
+				"          DATOS_SUBIDOS,",
+				"          DATOS_DESCARGADOS,",
+				"          VOLUMEN_TOTAL",
+				"     )) ~> silverDatos"
+			]
+		}
+	}
+}

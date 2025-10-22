@@ -27,7 +27,7 @@
 				"type": "String"
 			},
 			{
-				"name": " FECHA_FIN",
+				"name": "FECHA_FIN",
 				"type": "String"
 			},
 			{
@@ -47,19 +47,23 @@
 				"type": "String"
 			},
 			{
-				"name": "LATITUD_LONGITUD",
+				"name": "DATOS_SUBIDOS",
 				"type": "String"
 			},
 			{
-				"name": "DATOS_SUBIDOS(BYTES)",
+				"name": "DATOS_DESCARGADOS",
 				"type": "String"
 			},
 			{
-				"name": "DATOS_DESCARGADOS(BYTES)",
+				"name": "VOLUMEN_TOTAL",
 				"type": "String"
 			},
 			{
-				"name": "VOLUMEN_TOTAL(BYTES)",
+				"name": "LATITUD",
+				"type": "String"
+			},
+			{
+				"name": "LONGITUD",
 				"type": "String"
 			}
 		]

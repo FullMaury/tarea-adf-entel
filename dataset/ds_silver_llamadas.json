@@ -12,36 +12,79 @@
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "tipo",
-				"type": "varchar"
+				"name": "SERVICIO",
+				"type": "nvarchar"
 			},
 			{
-				"name": "numero_origen",
-				"type": "varchar"
+				"name": "REGISTRO",
+				"type": "nvarchar"
 			},
 			{
-				"name": "numero_destino",
-				"type": "varchar"
+				"name": "NUMERO_A",
+				"type": "nvarchar"
 			},
 			{
-				"name": "fecha",
-				"type": "date"
+				"name": "IMEI_A",
+				"type": "nvarchar"
 			},
 			{
-				"name": "hora",
+				"name": "RBS_UTILIZADA_A",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CELDA_A",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LATITUD_A",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 6
+			},
+			{
+				"name": "LONGITUD_A",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 6
+			},
+			{
+				"name": "NUMERO_B",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IMEI_B",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RBS_UTILIZADA_B",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CELDA_B",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LATITUD_B",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 6
+			},
+			{
+				"name": "LONGITUD_B",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 6
+			},
+			{
+				"name": "FECHA",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "DURACION",
 				"type": "time",
 				"scale": 7
-			},
-			{
-				"name": "duracion",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "costo",
-				"type": "decimal",
-				"precision": 18,
-				"scale": 0
 			}
 		],
 		"typeProperties": {
