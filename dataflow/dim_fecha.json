@@ -1,0 +1,69 @@
+{
+	"name": "dim_fecha",
+	"properties": {
+		"folder": {
+			"name": "Gold"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver_llamadas_entel",
+						"type": "DatasetReference"
+					},
+					"name": "silver"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_dim_fecha",
+						"type": "DatasetReference"
+					},
+					"name": "dimfecha"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          fecha as date,",
+				"          {año} as integer,",
+				"          mes as integer,",
+				"          mes_texto as string,",
+				"          dia_texto as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT\\nfecha as fecha,\\nYEAR(fecha) AS año,\\nMONTH(fecha) AS mes,\\nDATENAME(month, fecha) AS mes_texto,\\nDATENAME(day, fecha) AS dia_texto\\nFROM SILVER.LLAMADAS_TIGO',",
+				"     format: 'query') ~> silver",
+				"silver sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id_fecha as integer,",
+				"          fecha as date,",
+				"          {año} as integer,",
+				"          mes as integer,",
+				"          mes_texto as string,",
+				"          dia_texto as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          fecha,",
+				"          {año},",
+				"          mes,",
+				"          mes_texto,",
+				"          dia_texto",
+				"     )) ~> dimfecha"
+			]
+		}
+	}
+}

@@ -1,0 +1,62 @@
+{
+	"name": "dim_hora",
+	"properties": {
+		"folder": {
+			"name": "Gold"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver_llamadas_entel",
+						"type": "DatasetReference"
+					},
+					"name": "silver"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_dim_hora",
+						"type": "DatasetReference"
+					},
+					"name": "dimhora"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          hora as timestamp,",
+				"          hora24 as integer,",
+				"          hora12 as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT\\nhora AS hora,\\nDATEPART(hour, hora) AS hora24,\\nformat(hora, \\'hh\\') AS hora12\\nFROM SILVER.LLAMADAS_TIGO',",
+				"     format: 'query') ~> silver",
+				"silver sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id_hora as integer,",
+				"          hora as timestamp,",
+				"          hora24 as integer,",
+				"          hora12 as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          hora,",
+				"          hora24",
+				"     )) ~> dimhora"
+			]
+		}
+	}
+}
