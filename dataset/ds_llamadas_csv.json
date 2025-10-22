@@ -23,27 +23,55 @@
 		},
 		"schema": [
 			{
-				"name": "DESCRIPCION",
+				"name": "SERVICIO",
 				"type": "String"
 			},
 			{
-				"name": "TIPO",
+				"name": "REGISTRO",
 				"type": "String"
 			},
 			{
-				"name": "NUMERO_ORIGEN",
+				"name": "NUMERO_A",
 				"type": "String"
 			},
 			{
-				"name": "NUMERO_DESTINO",
+				"name": "IMEI_A",
+				"type": "String"
+			},
+			{
+				"name": "RBS_UTILIZADA_A",
+				"type": "String"
+			},
+			{
+				"name": "CELDA_A",
+				"type": "String"
+			},
+			{
+				"name": "LATITUD_LONGITUD_A",
+				"type": "String"
+			},
+			{
+				"name": "NUMERO_B",
+				"type": "String"
+			},
+			{
+				"name": "IMEI_B",
+				"type": "String"
+			},
+			{
+				"name": "RBS_UTILIZADA_B",
+				"type": "String"
+			},
+			{
+				"name": "CELDA_B",
+				"type": "String"
+			},
+			{
+				"name": "LATITUD_LONGITUD_B",
 				"type": "String"
 			},
 			{
 				"name": "FECHA",
-				"type": "String"
-			},
-			{
-				"name": "HORA",
 				"type": "String"
 			},
 			{
