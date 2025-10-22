@@ -11,9 +11,6 @@
 		"Is_sql_dw_entel_password": {
 			"value": ""
 		},
-		"ls_sa_raw_llamadas_connectionString": {
-			"value": ""
-		},
 		"Is_sql_dw_entel_properties_typeProperties_server": {
 			"value": "sql-ucb-sisinfo-entel-delta.database.windows.net"
 		},

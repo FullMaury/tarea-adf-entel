@@ -15,10 +15,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Is_sql_dw_entel'"
 		},
-		"ls_sa_raw_llamadas_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_sa_raw_llamadas'"
-		},
 		"Is_sql_dw_entel_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sql-ucb-sisinfo-entel-delta.database.windows.net"
@@ -64,9 +60,6 @@
 					"Is_sql_dw_entel_password": {
 						"value": "[parameters('Is_sql_dw_entel_password')]"
 					},
-					"ls_sa_raw_llamadas_connectionString": {
-						"value": "[parameters('ls_sa_raw_llamadas_connectionString')]"
-					},
 					"Is_sql_dw_entel_properties_typeProperties_server": {
 						"value": "[parameters('Is_sql_dw_entel_properties_typeProperties_server')]"
 					},
@@ -79,26 +72,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "adf-ucb-dw-entel-4536427_ArmTemplate_1",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2024-03-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'adf-ucb-dw-entel-4536427_ArmTemplate_0')]"
-			]
 		}
 	]
 }
