@@ -1,0 +1,120 @@
+{
+	"name": "df_dim_radiobase",
+	"properties": {
+		"folder": {
+			"name": "Gold"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver_llamadas",
+						"type": "DatasetReference"
+					},
+					"name": "sourceA"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_silver_llamadas",
+						"type": "DatasetReference"
+					},
+					"name": "sourceB"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_dim_radio_base",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_dim_radio_base",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          radio_base as string,",
+				"          celda as string,",
+				"          latitud as decimal(9,6),",
+				"          longitud as decimal(9,6)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT\\n    RBS_UTILIZADA_A AS radio_base,\\n    CELDA_A AS celda,\\n    LATITUD_A AS latitud,\\n    LONGITUD_A AS longitud\\nFROM SILVER.llamadas\\nWHERE RBS_UTILIZADA_A IS NOT NULL',",
+				"     format: 'query') ~> sourceA",
+				"source(output(",
+				"          SERVICIO as string,",
+				"          REGISTRO as string,",
+				"          NUMERO_A as string,",
+				"          IMEI_A as string,",
+				"          RBS_UTILIZADA_A as string,",
+				"          CELDA_A as string,",
+				"          LATITUD_A as decimal(9,6),",
+				"          LONGITUD_A as decimal(9,6),",
+				"          NUMERO_B as string,",
+				"          IMEI_B as string,",
+				"          RBS_UTILIZADA_B as string,",
+				"          CELDA_B as string,",
+				"          LATITUD_B as decimal(9,6),",
+				"          LONGITUD_B as decimal(9,6),",
+				"          FECHA as timestamp,",
+				"          DURACION as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT\\n    RBS_UTILIZADA_B AS radio_base,\\n    CELDA_B AS celda,\\n    LATITUD_B AS latitud,\\n    LONGITUD_B AS longitud\\nFROM SILVER.llamadas\\nWHERE RBS_UTILIZADA_B IS NOT NULL',",
+				"     format: 'query') ~> sourceB",
+				"sourceA sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id_radio_base as integer,",
+				"          radio_base as string,",
+				"          celda as string,",
+				"          latitud as decimal(18,0),",
+				"          longitud as decimal(18,0)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          radio_base,",
+				"          celda,",
+				"          latitud,",
+				"          longitud",
+				"     )) ~> sink1",
+				"sourceB sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id_radio_base as integer,",
+				"          radio_base as string,",
+				"          celda as string,",
+				"          latitud as decimal(18,0),",
+				"          longitud as decimal(18,0)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+			]
+		}
+	}
+}
