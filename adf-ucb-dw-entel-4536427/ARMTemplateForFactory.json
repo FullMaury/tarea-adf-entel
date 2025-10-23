@@ -33,6 +33,204 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/cargar_bronze_datos')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_cargar_datos",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_cargar_datos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"source2": {},
+									"sink1": {},
+									"sink2": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Bronze"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_cargar_datos')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cargar_bronze_llamadas')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_cargar_llamadas",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_cargar_llamadas",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Bronze"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_cargar_llamadas')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cargar_silver_datos')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_limpiar_datos",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_limpiar_datos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"brzDatos": {},
+									"silverDatos": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Silver"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_limpiar_datos')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cargar_silver_llamadas')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_limpiar_llamadas",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_limpiar_llamadas",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"brzLlamadas": {},
+									"silverLlamadas": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Silver"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_limpiar_llamadas')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_datos01_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1216,469 +1414,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/cargar_bronze_datos')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "df_cargar_datos",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "df_cargar_datos",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"source2": {},
-									"sink1": {},
-									"sink2": {}
-								},
-								"linkedServiceParameters": {}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Bronze"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_cargar_datos')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_limpiar_datos')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Silver"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "ds_tabla_datos",
-								"type": "DatasetReference"
-							},
-							"name": "brzDatos"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "ds_silver_datos",
-								"type": "DatasetReference"
-							},
-							"name": "silverDatos"
-						}
-					],
-					"transformations": [
-						{
-							"name": "subidos"
-						},
-						{
-							"name": "descargados"
-						},
-						{
-							"name": "total"
-						},
-						{
-							"name": "lat"
-						},
-						{
-							"name": "long"
-						},
-						{
-							"name": "fechaInicio"
-						},
-						{
-							"name": "fechaFin"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          FECHA_INICIO as string,",
-						"          FECHA_FIN as string,",
-						"          NUMERO as string,",
-						"          IMEI as string,",
-						"          RBS_UTILIZADA as string,",
-						"          CELDA as string,",
-						"          LATITUD as string,",
-						"          LONGITUD as string,",
-						"          DATOS_SUBIDOS as string,",
-						"          DATOS_DESCARGADOS as string,",
-						"          VOLUMEN_TOTAL as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> brzDatos",
-						"brzDatos cast(output(",
-						"          DATOS_SUBIDOS as integer",
-						"     ),",
-						"     errors: true) ~> subidos",
-						"subidos cast(output(",
-						"          DATOS_DESCARGADOS as integer",
-						"     ),",
-						"     errors: true) ~> descargados",
-						"descargados cast(output(",
-						"          VOLUMEN_TOTAL as integer",
-						"     ),",
-						"     errors: true) ~> total",
-						"fechaFin cast(output(",
-						"          LATITUD as double",
-						"     ),",
-						"     errors: true) ~> lat",
-						"lat cast(output(",
-						"          LONGITUD as double",
-						"     ),",
-						"     errors: true) ~> long",
-						"total derive(F_INICIO_LIMPIO = toTimestamp(FECHA_INICIO, 'dd-MM-yyyy HH:mm:ss')) ~> fechaInicio",
-						"fechaInicio derive(F_FIN_LIMPIO = toTimestamp(FECHA_FIN, 'dd-MM-yyyy HH:mm:ss')) ~> fechaFin",
-						"long sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          FECHA_INICIO as timestamp,",
-						"          FECHA_FIN as timestamp,",
-						"          NUMERO as string,",
-						"          IMEI as string,",
-						"          RBS_UTILIZADA as string,",
-						"          CELDA as string,",
-						"          LATITUD as decimal(9,6),",
-						"          LONGITUD as decimal(9,6),",
-						"          DATOS_SUBIDOS as integer,",
-						"          DATOS_DESCARGADOS as integer,",
-						"          VOLUMEN_TOTAL as integer",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          FECHA_INICIO = F_INICIO_LIMPIO,",
-						"          FECHA_FIN = F_FIN_LIMPIO,",
-						"          NUMERO,",
-						"          IMEI,",
-						"          RBS_UTILIZADA,",
-						"          CELDA,",
-						"          LATITUD,",
-						"          LONGITUD,",
-						"          DATOS_SUBIDOS,",
-						"          DATOS_DESCARGADOS,",
-						"          VOLUMEN_TOTAL",
-						"     )) ~> silverDatos"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_tabla_datos')]",
-				"[concat(variables('factoryId'), '/datasets/ds_silver_datos')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_limpiar_llamadas')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Silver"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "ds_tabla_llamadas",
-								"type": "DatasetReference"
-							},
-							"name": "brzLlamadas"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "ds_silver_llamadas",
-								"type": "DatasetReference"
-							},
-							"name": "silverLlamadas"
-						}
-					],
-					"transformations": [
-						{
-							"name": "duracion"
-						},
-						{
-							"name": "latitudlongitudA",
-							"description": "separar latitud y altitud A"
-						},
-						{
-							"name": "latlongB",
-							"description": "separar latitud y longitud B"
-						},
-						{
-							"name": "fecha"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          SERVICIO as string,",
-						"          REGISTRO as string,",
-						"          NUMERO_A as string,",
-						"          IMEI_A as string,",
-						"          RBS_UTILIZADA_A as string,",
-						"          CELDA_A as string,",
-						"          LATITUD_LONGITUD_A as string,",
-						"          NUMERO_B as string,",
-						"          IMEI_B as string,",
-						"          RBS_UTILIZADA_B as string,",
-						"          CELDA_B as string,",
-						"          LATITUD_LONGITUD_B as string,",
-						"          FECHA as string,",
-						"          DURACION as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> brzLlamadas",
-						"fecha cast(output(",
-						"          DURACION as timestamp 'HH:mm:ss'",
-						"     ),",
-						"     errors: true) ~> duracion",
-						"duracion derive(LATITUD_A = toDouble(split(LATITUD_LONGITUD_A, ',')[1]),",
-						"          LONGITUD_A = toDouble(split(LATITUD_LONGITUD_A, ',')[2])) ~> latitudlongitudA",
-						"latitudlongitudA derive(LATITUD_B = toDecimal(split(LATITUD_LONGITUD_B, ',')[1], 9, 6),",
-						"          LONGITUD_B = toDecimal(split(LATITUD_LONGITUD_B, ',')[2], 9, 6)) ~> latlongB",
-						"brzLlamadas derive(FECHA_LIMPIA = toTimestamp(FECHA, 'dd-MM-yyyy HH:mm:ss')) ~> fecha",
-						"latlongB sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          SERVICIO as string,",
-						"          REGISTRO as string,",
-						"          NUMERO_A as string,",
-						"          IMEI_A as string,",
-						"          RBS_UTILIZADA_A as string,",
-						"          CELDA_A as string,",
-						"          LATITUD_A as decimal(9,6),",
-						"          LONGITUD_A as decimal(9,6),",
-						"          NUMERO_B as string,",
-						"          IMEI_B as string,",
-						"          RBS_UTILIZADA_B as string,",
-						"          CELDA_B as string,",
-						"          LATITUD_B as decimal(9,6),",
-						"          LONGITUD_B as decimal(9,6),",
-						"          FECHA as timestamp,",
-						"          DURACION as timestamp",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          SERVICIO,",
-						"          REGISTRO,",
-						"          NUMERO_A,",
-						"          IMEI_A,",
-						"          RBS_UTILIZADA_A,",
-						"          CELDA_A,",
-						"          LATITUD_A,",
-						"          LONGITUD_A,",
-						"          NUMERO_B,",
-						"          IMEI_B,",
-						"          RBS_UTILIZADA_B,",
-						"          CELDA_B,",
-						"          LATITUD_B,",
-						"          LONGITUD_B,",
-						"          FECHA = FECHA_LIMPIA,",
-						"          DURACION",
-						"     )) ~> silverLlamadas"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_tabla_llamadas')]",
-				"[concat(variables('factoryId'), '/datasets/ds_silver_llamadas')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/cargar_silver_datos')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "df_limpiar_datos",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "df_limpiar_datos",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"brzDatos": {},
-									"silverDatos": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Silver"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_limpiar_datos')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/cargar_bronze_llamadas')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "df_cargar_llamadas",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "df_cargar_llamadas",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
-								},
-								"linkedServiceParameters": {}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Bronze"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_cargar_llamadas')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/cargar_silver_llamadas')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "df_limpiar_llamadas",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "df_limpiar_llamadas",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"brzLlamadas": {},
-									"silverLlamadas": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Silver"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_limpiar_llamadas')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/df_dim_fecha')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -2005,6 +1740,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "sourceB"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_silver_datos",
+								"type": "DatasetReference"
+							},
+							"name": "sourceDatos"
 						}
 					],
 					"sinks": [
@@ -2021,6 +1763,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "sink2"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_dim_radio_base",
+								"type": "DatasetReference"
+							},
+							"name": "sink3"
 						}
 					],
 					"transformations": [],
@@ -2037,28 +1786,27 @@
 						"     query: 'SELECT DISTINCT\\n    RBS_UTILIZADA_A AS radio_base,\\n    CELDA_A AS celda,\\n    LATITUD_A AS latitud,\\n    LONGITUD_A AS longitud\\nFROM SILVER.llamadas\\nWHERE RBS_UTILIZADA_A IS NOT NULL',",
 						"     format: 'query') ~> sourceA",
 						"source(output(",
-						"          SERVICIO as string,",
-						"          REGISTRO as string,",
-						"          NUMERO_A as string,",
-						"          IMEI_A as string,",
-						"          RBS_UTILIZADA_A as string,",
-						"          CELDA_A as string,",
-						"          LATITUD_A as decimal(9,6),",
-						"          LONGITUD_A as decimal(9,6),",
-						"          NUMERO_B as string,",
-						"          IMEI_B as string,",
-						"          RBS_UTILIZADA_B as string,",
-						"          CELDA_B as string,",
-						"          LATITUD_B as decimal(9,6),",
-						"          LONGITUD_B as decimal(9,6),",
-						"          FECHA as timestamp,",
-						"          DURACION as timestamp",
+						"          radio_base as string,",
+						"          celda as string,",
+						"          latitud as decimal(9,6),",
+						"          longitud as decimal(9,6)",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     isolationLevel: 'READ_UNCOMMITTED',",
 						"     query: 'SELECT DISTINCT\\n    RBS_UTILIZADA_B AS radio_base,\\n    CELDA_B AS celda,\\n    LATITUD_B AS latitud,\\n    LONGITUD_B AS longitud\\nFROM SILVER.llamadas\\nWHERE RBS_UTILIZADA_B IS NOT NULL',",
 						"     format: 'query') ~> sourceB",
+						"source(output(",
+						"          radio_base as string,",
+						"          celda as string,",
+						"          latitud as decimal(9,6),",
+						"          longitud as decimal(9,6)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT\\n    RBS_UTILIZADA AS radio_base,\\n    CELDA AS celda,\\n    LATITUD AS latitud,\\n    LONGITUD AS longitud\\nFROM SILVER.datos\\nWHERE RBS_UTILIZADA IS NOT NULL',",
+						"     format: 'query') ~> sourceDatos",
 						"sourceA sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
@@ -2098,13 +1846,432 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          radio_base,",
+						"          celda,",
+						"          latitud,",
+						"          longitud",
+						"     )) ~> sink2",
+						"sourceDatos sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          id_radio_base as integer,",
+						"          radio_base as string,",
+						"          celda as string,",
+						"          latitud as decimal(18,0),",
+						"          longitud as decimal(18,0)",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          radio_base,",
+						"          celda,",
+						"          latitud,",
+						"          longitud",
+						"     )) ~> sink3"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_silver_llamadas')]",
+				"[concat(variables('factoryId'), '/datasets/ds_silver_datos')]",
 				"[concat(variables('factoryId'), '/datasets/ds_dim_radio_base')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_limpiar_datos')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Silver"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_tabla_datos",
+								"type": "DatasetReference"
+							},
+							"name": "brzDatos"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_silver_datos",
+								"type": "DatasetReference"
+							},
+							"name": "silverDatos"
+						}
+					],
+					"transformations": [
+						{
+							"name": "subidos"
+						},
+						{
+							"name": "descargados"
+						},
+						{
+							"name": "total"
+						},
+						{
+							"name": "lat"
+						},
+						{
+							"name": "long"
+						},
+						{
+							"name": "fechaInicio"
+						},
+						{
+							"name": "fechaFin"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          FECHA_INICIO as string,",
+						"          FECHA_FIN as string,",
+						"          NUMERO as string,",
+						"          IMEI as string,",
+						"          RBS_UTILIZADA as string,",
+						"          CELDA as string,",
+						"          LATITUD as string,",
+						"          LONGITUD as string,",
+						"          DATOS_SUBIDOS as string,",
+						"          DATOS_DESCARGADOS as string,",
+						"          VOLUMEN_TOTAL as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> brzDatos",
+						"brzDatos cast(output(",
+						"          DATOS_SUBIDOS as integer",
+						"     ),",
+						"     errors: true) ~> subidos",
+						"subidos cast(output(",
+						"          DATOS_DESCARGADOS as integer",
+						"     ),",
+						"     errors: true) ~> descargados",
+						"descargados cast(output(",
+						"          VOLUMEN_TOTAL as integer",
+						"     ),",
+						"     errors: true) ~> total",
+						"fechaFin cast(output(",
+						"          LATITUD as double",
+						"     ),",
+						"     errors: true) ~> lat",
+						"lat cast(output(",
+						"          LONGITUD as double",
+						"     ),",
+						"     errors: true) ~> long",
+						"total derive(F_INICIO_LIMPIO = toTimestamp(FECHA_INICIO, 'dd-MM-yyyy HH:mm:ss')) ~> fechaInicio",
+						"fechaInicio derive(F_FIN_LIMPIO = toTimestamp(FECHA_FIN, 'dd-MM-yyyy HH:mm:ss')) ~> fechaFin",
+						"long sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          FECHA_INICIO as timestamp,",
+						"          FECHA_FIN as timestamp,",
+						"          NUMERO as string,",
+						"          IMEI as string,",
+						"          RBS_UTILIZADA as string,",
+						"          CELDA as string,",
+						"          LATITUD as decimal(9,6),",
+						"          LONGITUD as decimal(9,6),",
+						"          DATOS_SUBIDOS as integer,",
+						"          DATOS_DESCARGADOS as integer,",
+						"          VOLUMEN_TOTAL as integer",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          FECHA_INICIO = F_INICIO_LIMPIO,",
+						"          FECHA_FIN = F_FIN_LIMPIO,",
+						"          NUMERO,",
+						"          IMEI,",
+						"          RBS_UTILIZADA,",
+						"          CELDA,",
+						"          LATITUD,",
+						"          LONGITUD,",
+						"          DATOS_SUBIDOS,",
+						"          DATOS_DESCARGADOS,",
+						"          VOLUMEN_TOTAL",
+						"     )) ~> silverDatos"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_tabla_datos')]",
+				"[concat(variables('factoryId'), '/datasets/ds_silver_datos')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_limpiar_llamadas')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Silver"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_tabla_llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "brzLlamadas"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_silver_llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "silverLlamadas"
+						}
+					],
+					"transformations": [
+						{
+							"name": "duracion"
+						},
+						{
+							"name": "latitudlongitudA",
+							"description": "separar latitud y altitud A"
+						},
+						{
+							"name": "latlongB",
+							"description": "separar latitud y longitud B"
+						},
+						{
+							"name": "fecha"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          SERVICIO as string,",
+						"          REGISTRO as string,",
+						"          NUMERO_A as string,",
+						"          IMEI_A as string,",
+						"          RBS_UTILIZADA_A as string,",
+						"          CELDA_A as string,",
+						"          LATITUD_LONGITUD_A as string,",
+						"          NUMERO_B as string,",
+						"          IMEI_B as string,",
+						"          RBS_UTILIZADA_B as string,",
+						"          CELDA_B as string,",
+						"          LATITUD_LONGITUD_B as string,",
+						"          FECHA as string,",
+						"          DURACION as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> brzLlamadas",
+						"fecha cast(output(",
+						"          DURACION as timestamp 'HH:mm:ss'",
+						"     ),",
+						"     errors: true) ~> duracion",
+						"duracion derive(LATITUD_A = toDouble(split(LATITUD_LONGITUD_A, ',')[1]),",
+						"          LONGITUD_A = toDouble(split(LATITUD_LONGITUD_A, ',')[2])) ~> latitudlongitudA",
+						"latitudlongitudA derive(LATITUD_B = toDecimal(split(LATITUD_LONGITUD_B, ',')[1], 9, 6),",
+						"          LONGITUD_B = toDecimal(split(LATITUD_LONGITUD_B, ',')[2], 9, 6)) ~> latlongB",
+						"brzLlamadas derive(FECHA_LIMPIA = toTimestamp(FECHA, 'dd-MM-yyyy HH:mm:ss')) ~> fecha",
+						"latlongB sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          SERVICIO as string,",
+						"          REGISTRO as string,",
+						"          NUMERO_A as string,",
+						"          IMEI_A as string,",
+						"          RBS_UTILIZADA_A as string,",
+						"          CELDA_A as string,",
+						"          LATITUD_A as decimal(9,6),",
+						"          LONGITUD_A as decimal(9,6),",
+						"          NUMERO_B as string,",
+						"          IMEI_B as string,",
+						"          RBS_UTILIZADA_B as string,",
+						"          CELDA_B as string,",
+						"          LATITUD_B as decimal(9,6),",
+						"          LONGITUD_B as decimal(9,6),",
+						"          FECHA as timestamp,",
+						"          DURACION as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          SERVICIO,",
+						"          REGISTRO,",
+						"          NUMERO_A,",
+						"          IMEI_A,",
+						"          RBS_UTILIZADA_A,",
+						"          CELDA_A,",
+						"          LATITUD_A,",
+						"          LONGITUD_A,",
+						"          NUMERO_B,",
+						"          IMEI_B,",
+						"          RBS_UTILIZADA_B,",
+						"          CELDA_B,",
+						"          LATITUD_B,",
+						"          LONGITUD_B,",
+						"          FECHA = FECHA_LIMPIA,",
+						"          DURACION",
+						"     )) ~> silverLlamadas"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_tabla_llamadas')]",
+				"[concat(variables('factoryId'), '/datasets/ds_silver_llamadas')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_dim_registro')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Gold"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_silver_llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_dim_registro",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          registro as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT\\nREGISTRO AS registro\\nFROM SILVER.llamadas',",
+						"     format: 'query') ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          id_registro as integer,",
+						"          registro as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          registro",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_silver_llamadas')]",
+				"[concat(variables('factoryId'), '/datasets/ds_dim_registro')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_dim_servicio')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Gold"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_silver_llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_dim_servicio",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          servicio as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT\\nSERVICIO AS servicio\\nFROM SILVER.llamadas',",
+						"     format: 'query') ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          id_servicio as integer,",
+						"          servicio as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          servicio",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_silver_llamadas')]",
+				"[concat(variables('factoryId'), '/datasets/ds_dim_servicio')]"
 			]
 		}
 	]
