@@ -33,7 +33,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/cargar_bronze_datos')]",
+			"name": "[concat(parameters('factoryName'), '/cargar_bronze')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -41,7 +41,14 @@
 					{
 						"name": "df_cargar_datos",
 						"type": "ExecuteDataFlow",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Script1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -69,30 +76,44 @@
 							},
 							"traceLevel": "Fine"
 						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Bronze"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_cargar_datos')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/cargar_bronze_llamadas')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
+					},
+					{
+						"name": "Script1",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "Is_sql_dw_entel",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "DELETE FROM BRONZE.llamadas;\nDELETE FROM BRONZE.datos;"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
 					{
 						"name": "df_cargar_llamadas",
 						"type": "ExecuteDataFlow",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "df_cargar_datos",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -129,11 +150,134 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_cargar_datos')]",
+				"[concat(variables('factoryId'), '/linkedServices/Is_sql_dw_entel')]",
 				"[concat(variables('factoryId'), '/dataflows/df_cargar_llamadas')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/cargar_dimensiones')]",
+			"name": "[concat(parameters('factoryName'), '/cargar_silver')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_limpiar_datos",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Script1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_limpiar_datos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"brzDatos": {},
+									"silverDatos": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Script1",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "Is_sql_dw_entel",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "DELETE FROM SILVER.llamadas;\nDELETE FROM SILVER.datos;"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "df_limpiar_llamadas",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "df_limpiar_datos",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_limpiar_llamadas",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"brzLlamadas": {},
+									"silverLlamadas": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Silver"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_limpiar_datos')]",
+				"[concat(variables('factoryId'), '/linkedServices/Is_sql_dw_entel')]",
+				"[concat(variables('factoryId'), '/dataflows/df_limpiar_llamadas')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/etl_gold')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -141,7 +285,14 @@
 					{
 						"name": "df_dim_registro",
 						"type": "ExecuteDataFlow",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Script1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -327,6 +478,32 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "Script1",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "Is_sql_dw_entel",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "\nDELETE FROM GOLD.dim_servicio;\nDELETE FROM GOLD.dim_registro;\nDELETE FROM GOLD.dim_radio_base;\nDELETE FROM GOLD.dim_numero;\nDELETE FROM GOLD.dim_fecha;\nDELETE FROM GOLD.hechos_llamadas;\nDELETE FROM GOLD.hechos_datos;"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
 					}
 				],
 				"policy": {
@@ -342,105 +519,8 @@
 				"[concat(variables('factoryId'), '/dataflows/df_dim_servicio')]",
 				"[concat(variables('factoryId'), '/dataflows/df_dim_radiobase')]",
 				"[concat(variables('factoryId'), '/dataflows/df_dim_numero')]",
-				"[concat(variables('factoryId'), '/dataflows/df_dim_fecha')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/cargar_silver_datos')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "df_limpiar_datos",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "df_limpiar_datos",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"brzDatos": {},
-									"silverDatos": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Silver"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_limpiar_datos')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/cargar_silver_llamadas')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "df_limpiar_llamadas",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "df_limpiar_llamadas",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"brzLlamadas": {},
-									"silverLlamadas": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Silver"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_limpiar_llamadas')]"
+				"[concat(variables('factoryId'), '/dataflows/df_dim_fecha')]",
+				"[concat(variables('factoryId'), '/linkedServices/Is_sql_dw_entel')]"
 			]
 		},
 		{
@@ -2468,12 +2548,10 @@
 						"cast1 derive(DURACION = replace(DURACION, '-', \"00:00:00\")) ~> derivedColumn1",
 						"latitudlongitudA derive(LATITUD_A = iifNull(LATITUD_A, 0.0)) ~> derivedColumn2",
 						"derivedColumn2 derive(LONGITUD_A = iifNull(LONGITUD_A, 0.0)) ~> derivedColumn3",
-						"latlongB derive(LATITUD_B = iifNull(LATITUD_B, 0.0)",
-						") ~> derivedColumn4",
-						"derivedColumn4 derive(LONGITUD_B = iifNull(LONGITUD_B, 0.0)",
-						") ~> derivedColumn5",
+						"latlongB derive(LATITUD_B = iifNull(LATITUD_B, 0.0)) ~> derivedColumn4",
+						"derivedColumn4 derive(LONGITUD_B = iifNull(LONGITUD_B, 0.0)) ~> derivedColumn5",
 						"fecha cast(output(",
-						"          FECHA_LIMPIA as date 'yyyy/MM/dd'",
+						"          FECHA_LIMPIA as timestamp 'yyyy.MM.dd HH:mm:ss'",
 						"     ),",
 						"     errors: true) ~> cast1",
 						"derivedColumn5 sink(allowSchemaDrift: true,",
@@ -2505,7 +2583,7 @@
 						"     skipDuplicateMapOutputs: true,",
 						"     errorHandlingOption: 'stopOnFirstError',",
 						"     mapColumn(",
-						"          SERVICIO = FECHA_LIMPIA,",
+						"          SERVICIO,",
 						"          REGISTRO,",
 						"          NUMERO_A,",
 						"          IMEI_A,",
