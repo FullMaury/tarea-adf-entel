@@ -38,6 +38,24 @@
 				},
 				{
 					"name": "fecha"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "derivedColumn3"
+				},
+				{
+					"name": "derivedColumn4"
+				},
+				{
+					"name": "derivedColumn5"
+				},
+				{
+					"name": "cast1"
 				}
 			],
 			"scriptLines": [
@@ -61,16 +79,27 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> brzLlamadas",
-				"fecha cast(output(",
+				"derivedColumn1 cast(output(",
 				"          DURACION as timestamp 'HH:mm:ss'",
 				"     ),",
 				"     errors: true) ~> duracion",
 				"duracion derive(LATITUD_A = toDouble(split(LATITUD_LONGITUD_A, ',')[1]),",
 				"          LONGITUD_A = toDouble(split(LATITUD_LONGITUD_A, ',')[2])) ~> latitudlongitudA",
-				"latitudlongitudA derive(LATITUD_B = toDecimal(split(LATITUD_LONGITUD_B, ',')[1], 9, 6),",
+				"derivedColumn3 derive(LATITUD_B = toDecimal(split(LATITUD_LONGITUD_B, ',')[1], 9, 6),",
 				"          LONGITUD_B = toDecimal(split(LATITUD_LONGITUD_B, ',')[2], 9, 6)) ~> latlongB",
 				"brzLlamadas derive(FECHA_LIMPIA = toTimestamp(FECHA, 'dd-MM-yyyy HH:mm:ss')) ~> fecha",
-				"latlongB sink(allowSchemaDrift: true,",
+				"cast1 derive(DURACION = replace(DURACION, '-', \"00:00:00\")) ~> derivedColumn1",
+				"latitudlongitudA derive(LATITUD_A = iifNull(LATITUD_A, 0.0)) ~> derivedColumn2",
+				"derivedColumn2 derive(LONGITUD_A = iifNull(LONGITUD_A, 0.0)) ~> derivedColumn3",
+				"latlongB derive(LATITUD_B = iifNull(LATITUD_B, 0.0)",
+				") ~> derivedColumn4",
+				"derivedColumn4 derive(LONGITUD_B = iifNull(LONGITUD_B, 0.0)",
+				") ~> derivedColumn5",
+				"fecha cast(output(",
+				"          FECHA_LIMPIA as date 'yyyy/MM/dd'",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"derivedColumn5 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          SERVICIO as string,",
@@ -99,7 +128,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          SERVICIO,",
+				"          SERVICIO = FECHA_LIMPIA,",
 				"          REGISTRO,",
 				"          NUMERO_A,",
 				"          IMEI_A,",

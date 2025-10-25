@@ -45,6 +45,12 @@
 				},
 				{
 					"name": "fechaFin"
+				},
+				{
+					"name": "cast1"
+				},
+				{
+					"name": "cast2"
 				}
 			],
 			"scriptLines": [
@@ -77,7 +83,7 @@
 				"          VOLUMEN_TOTAL as integer",
 				"     ),",
 				"     errors: true) ~> total",
-				"fechaFin cast(output(",
+				"cast2 cast(output(",
 				"          LATITUD as double",
 				"     ),",
 				"     errors: true) ~> lat",
@@ -86,7 +92,15 @@
 				"     ),",
 				"     errors: true) ~> long",
 				"total derive(F_INICIO_LIMPIO = toTimestamp(FECHA_INICIO, 'dd-MM-yyyy HH:mm:ss')) ~> fechaInicio",
-				"fechaInicio derive(F_FIN_LIMPIO = toTimestamp(FECHA_FIN, 'dd-MM-yyyy HH:mm:ss')) ~> fechaFin",
+				"cast1 derive(F_FIN_LIMPIO = toTimestamp(FECHA_FIN, 'dd-MM-yyyy HH:mm:ss')) ~> fechaFin",
+				"fechaInicio cast(output(",
+				"          F_INICIO_LIMPIO as timestamp 'MM/dd/yyyy HH:mm:ss'",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"fechaFin cast(output(",
+				"          F_FIN_LIMPIO as timestamp 'MM/dd/yyyy HH:mm:ss'",
+				"     ),",
+				"     errors: true) ~> cast2",
 				"long sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
